@@ -4,6 +4,7 @@ const ejsMate = require('ejs-mate')
 const path = require('path');
 require('dotenv').config();
 const dbUrl = process.env.DB_URL;
+const PORT = process.env.PORT;
 const mongoose = require('mongoose');
 mongoose.connect(dbUrl, () => console.log("Database Connected"))
 
@@ -44,7 +45,7 @@ app.post('/', async (req, res) => {
         let oldUrl = await Url.findOne({ url: url })
         if (oldUrl) {
             res.render('index.ejs', {
-                url: req.hostname + "/" + oldUrl.shortId, err: null
+                url: req.protocol + '://' + req.get('host') + req.originalUrl + oldUrl.shortId, err: null
             })
         }
         else {
@@ -57,7 +58,7 @@ app.post('/', async (req, res) => {
                     shortId: newShortId
                 })
                 await newUrl.save()
-                res.render('index.ejs', { url: req.hostname + "/" + newShortId, err: null })
+                res.render('index.ejs', { url: req.protocol + '://' + req.get('host') + req.originalUrl + newShortId, err: null })
             }
             catch (err) {
                 res.render('index.ejs', { err: err.message, url: null });
@@ -73,6 +74,7 @@ app.get('/:id', async (req, res) => {
     const { id } = req.params;
     let url = await Url.findOne({ shortId: id });
     if (url) {
+
         res.redirect(url.url);
     }
     else {
@@ -85,5 +87,5 @@ app.get('*', (req, res) => {
     res.render('index.ejs', { err: 'Page not found.', url: null })
 })
 
-app.listen(8080, () => console.log('Server is running on port 8080'))
+app.listen(PORT, () => console.log('Server is running on port', PORT))
 
