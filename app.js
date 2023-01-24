@@ -45,7 +45,7 @@ app.post('/', async (req, res) => {
         let oldUrl = await Url.findOne({ url: url })
         if (oldUrl) {
             res.render('index.ejs', {
-                url: req.protocol + '://' + req.get('host') + req.originalUrl + oldUrl.shortId, err: null
+                url: req.get('host') + req.originalUrl + oldUrl.shortId, err: null
             })
         }
         else {
@@ -58,7 +58,7 @@ app.post('/', async (req, res) => {
                     shortId: newShortId
                 })
                 await newUrl.save()
-                res.render('index.ejs', { url: req.protocol + '://' + req.get('host') + req.originalUrl + newShortId, err: null })
+                res.render('index.ejs', { url: req.get('host') + req.originalUrl + newShortId, err: null })
             }
             catch (err) {
                 res.render('index.ejs', { err: err.message, url: null });
