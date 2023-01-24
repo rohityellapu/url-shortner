@@ -20,7 +20,8 @@
                     type="submit" value="Generate Short URL">
 
                 <% if (url) { %>
-                <p class="text-4xl text-green-600">Your short URL: <%= url %> </p>
+                <p class="text-4xl text-green-600">Your short URL: <a href="<%= url %>" target="_blank"><%= url %></a>
+                </p>
                 <% } %>
                 <% if (err) { %>
                 <h2 class="text-red-600 text-3xl">Error!</h2>
