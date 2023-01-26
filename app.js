@@ -74,7 +74,8 @@ app.get('/:id', async (req, res) => {
     const { id } = req.params;
     let url = await Url.findOne({ shortId: id });
     if (url) {
-        await Url.updateOne({ shortId: id }, { set$: { clicks: url.clicks + 1 } })
+        let newClicks = url.clicks + 1;
+        await Url.updateOne({ shortId: id }, { set$: { clicks: newClicks } })
         res.redirect(url.url);
     }
     else {
